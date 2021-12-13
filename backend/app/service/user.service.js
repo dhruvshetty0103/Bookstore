@@ -1,8 +1,9 @@
-const userModel = require('../models/user.model.js')
-const bcrypt = require('bcrypt')
-const mailHelper = require('../../utility/node.mailer.js')
-const jwtHelper = require('../../utility/jwt.js')
-class userService {
+const userModel = require("../models/user.model.js");
+const jwtHelper = require("../../utility/jwt");
+const mailHelper = require("../../utility/mailer");
+const bcrypt = require("bcrypt");
+
+class UserService {
   /**
    * @description Service layer function for user login
    * @param {Object} body
@@ -12,90 +13,108 @@ class userService {
   loginUser = (body, callback) => {
     userModel.loginUser(body, (err, data) => {
       if (err) {
-        return callback(err, null)
+        return callback(err, null);
       } else {
         if (bcrypt.compareSync(body.password, data.password)) {
-          var token = jwtHelper.generateToken(data._id)
-          var result = { data: data, Token: token }
-          return callback(null, result)
+          var token = jwtHelper.generateToken(data._id);
+          var result = { data: data, token: token };
+          return callback(null, result);
         } else {
-          return callback('password mismatch')
+          return callback("password mismatch");
         }
       }
-    })
-  }
-
-  createUser = (body, callback) => {
-    userModel.createUser(
-      body.firstName,
-      body.lastName,
-      body.email,
-      body.password,
-      (err, data) => {
-        return err ? callback(err, null) : callback(null, data)
-      }
-    )
-  }
-
-  findAll = (callback) => {
-    userModel.findAll((err, data) => {
-      return err ? callback(err, null) : callback(null, data)
-    })
-  }
-
-  findOne = (email, callback) => {
-    userModel.findOne(email, (err, data) => {
-      return err ? callback(err, null) : callback(null, data)
-    })
-  }
-
-  updateUser = (findId, body, callback) => {
-    userModel.updateUser(
-      findId,
-      body.firstName,
-      body.lastName,
-      body.email,
-      body.password,
-      (err, data) => {
-        return err ? callback(err, null) : callback(null, data)
-      }
-    )
-  }
-
-  deleteOne = (findId, callback) => {
-    userModel.deleteOne(findId, (err, data) => {
-      return err ? callback(err, null) : callback(null, data)
-    })
-  }
-
+    });
+  };
+  /**
+   * @description Service layer function for user registeration
+   * @param {Object} body
+   * @param {callback} callback
+   */
+  registerUser = (body, callback) => {
+    userModel.registerUser(body, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+  /**
+   * @description Service layer function for finding all user
+   * @param {callback} callback
+   */
+  findAllUser = (callback) => {
+    userModel.findAllUser((err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+  /**
+   * @description Service layer function for finding particular user using email
+   * @param {string} email
+   * @param {callback} callback
+   */
+  findOneUser = (id, callback) => {
+    userModel.findOneUser(id, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+  /**
+   *@description Service layer function for updating user details
+   * @param {Object} userID
+   * @param {Object} body
+   * @param {callback} callback
+   */
+  updateUserDetail = (userID, body, callback) => {
+    userModel.updateUserDetail(userID, body, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+  /**
+   *@description Service layer function for deleting a user
+   * @param {Object} userID
+   * @param {callback} callback
+   */
+  deleteUser = (userID, callback) => {
+    userModel.deleteUser(userID, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+  /**
+   * @description Service layer function for user forgot password
+   * @param {string} email
+   * @returns
+   */
   forgotPassword = (email) => {
     return userModel
       .forgotPassword(email)
       .then((data) => {
+        let token = data.resetPasswordToken;
         return mailHelper
-          .mailer(data.email, data.resetPasswordToken)
+          .mailer(data.email, token)
           .then((data) => {
-            return data
+            data.token = token;
+            return data;
           })
           .catch((err) => {
-            throw err
-          })
+            throw err;
+          });
       })
       .catch((err) => {
-        throw err
-      })
-  }
-
+        throw err;
+      });
+  };
+  /**
+   * @description Service layer function for user reset password
+   * @param {string} token
+   * @param {string} password
+   * @returns
+   */
   resetPassword = (token, password) => {
     return userModel
       .resetPassword(token, password)
       .then((data) => {
-        return data
+        return data;
       })
       .catch((err) => {
-        throw err
-      })
-  }
+        throw err;
+      });
+  };
 }
 
-module.exports = new userService()
+module.exports = new UserService();

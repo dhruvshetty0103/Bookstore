@@ -1,11 +1,25 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
-const jwtHelper = require('../../utility/jwt')
-const UserSchema = mongoose.Schema(
+/* ************************************************************************
+ * Execution        : 1. default node  cmd> nodemon server.js
+ * @descrition      : user model creates user schema and performs db operation
+ * @file            : user.model.js
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
+
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwtHelper = require("../../utility/jwt");
+const userSchema = mongoose.Schema(
   {
     firstName: String,
     lastName: String,
-    email: String,
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     password: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
@@ -13,103 +27,138 @@ const UserSchema = mongoose.Schema(
   {
     timestamps: true,
   }
-)
+);
 
-const myUser = mongoose.model('User', UserSchema)
-let encryptedPassword
-class userModel {
+const myUser = mongoose.model("User", userSchema);
+let encryptedPassword;
+class UserModel {
+  /**
+   * @description model function for user login
+   * @param {Object} body
+   * @param {callback} callback
+   * @returns err or data
+   */
   loginUser = (body, callback) => {
     return myUser.findOne({ email: body.email }, (err, data) => {
       return err
         ? callback(err, null)
         : data == null
-        ? callback('Email id is not present', null)
-        : callback(null, data)
-    })
-  }
+        ? callback("Email id is not present", null)
+        : callback(null, data);
+    });
+  };
 
-  //creates a user and saves it in database
-  createUser = (firstName, lastName, email, password, callback) => {
-    encryptedPassword = bcrypt.hashSync(password, 10)
+  /**
+   * @description model function for user registeration
+   * @param {Object} body
+   * @param {callback} callback
+   * @returns err or data
+   */
+  registerUser = (body, callback) => {
+    encryptedPassword = bcrypt.hashSync(body.password, 10);
     const user = new myUser({
-      firstName: firstName,
-      lastName,
-      lastName,
-      email: email,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      email: body.email,
       password: encryptedPassword,
-    })
-    // Save user in the database
+    });
+
     return user.save((err, data) => {
-      return err ? callback(err, null) : callback(null, data)
-    })
-  }
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
 
-  // Retrieve and return all users from the database.
-  findAll = (callback) => {
+  /**
+   *@description model function for finding all user in database
+   * @param {callback} callback
+   * @returns err or data
+   */
+  findAllUser = (callback) => {
     return myUser.find((err, data) => {
-      return err ? callback(err, null) : callback(null, data)
-    })
-  }
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
 
-  // Find a single user with a userId
-  findOne = (userId, callback) => {
-    myUser.findById(userId, (err, data) => {
-      return err ? callback(err, null) : callback(null, data)
-    })
-  }
+  /**
+   * @description model function for finding user based on email in database
+   * @param {string} email
+   * @param {callback} callback
+   * @returns err or data
+   */
+  findOneUser = (id, callback) => {
+    myUser.findById(id, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
 
-  // Update a user identified by the userId in the request
-  updateUser = (userId, firstName, lastName, email, password, callback) => {
+  /**
+   * @description model function for user detail updation
+   * @param {string} userID
+   * @param {Object} body
+   * @param {callback} callback
+   * @returns err or data
+   */
+  updateUserDetail = (userID, body, callback) => {
     // Find user and update it with the request body
     myUser.findByIdAndUpdate(
-      userId,
+      userID,
       {
-        firstName: firstName || 'Unnamed user',
-        lastName: lastName,
-        email: email,
-        password: password,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        email: body.email,
       },
       { new: true },
       (err, data) => {
-        return err ? callback(err, null) : callback(null, data)
+        return err ? callback(err, null) : callback(null, data);
       }
-    )
-  }
-
-  // Delete a user with the specified userId in the request
-  deleteOne = (userId, callback) => {
-    myUser.findByIdAndRemove(userId, (err, data) => {
-      return err ? callback(err, null) : callback(null, data)
-    })
-  }
-
-  // Forgot password with the specified userId in the request
+    );
+  };
+  /**
+   *@description model function for user deletion
+   * @param {string} userID
+   * @param {callback} callback
+   * @returns err or data
+   */
+  deleteUser = (userID, callback) => {
+    myUser.findByIdAndRemove(userID, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+  /**
+   *@description model function for forgot user password
+   * @param {string} email
+   * @returns err or data
+   */
   forgotPassword = (email) => {
     return myUser
       .findOne({ email: email })
       .then((data) => {
         if (!data) {
-          throw 'Email not found'
+          throw "Email not found";
         } else {
-          let randomToken = jwtHelper.generateRandomCode()
-          data.resetPasswordToken = randomToken
-          data.resetPasswordExpires = Date.now() + 3600000
+          let randomToken = jwtHelper.generateRandomCode();
+          data.resetPasswordToken = randomToken;
+          data.resetPasswordExpires = Date.now() + 3600000;
           return data
             .save()
             .then((res) => {
-              return res
+              return res;
             })
             .catch((err) => {
-              throw err
-            })
+              throw err;
+            });
         }
       })
       .catch((err) => {
-        throw err
-      })
-  }
-
-  //Model function for user password reset
+        throw err;
+      });
+  };
+  /**
+   *@description model function for user password reset
+   * @param {string} token
+   * @param {string} newPassword
+   * @returns err or data
+   */
   resetPassword = (token, newPassword) => {
     return myUser
       .findOne({
@@ -118,26 +167,26 @@ class userModel {
       })
       .then((data) => {
         if (!data) {
-          throw 'token not found'
+          throw "token not found";
         } else {
-          encryptedPassword = bcrypt.hashSync(newPassword, 10)
-          ;(data.password = encryptedPassword),
+          encryptedPassword = bcrypt.hashSync(newPassword, 10);
+          (data.password = encryptedPassword),
             (data.resetPasswordToken = undefined),
-            (data.resetPasswordExpires = undefined)
+            (data.resetPasswordExpires = undefined);
           return data
             .save()
             .then((data) => {
-              return data
+              return data;
             })
             .catch((err) => {
-              throw err
-            })
+              throw err;
+            });
         }
       })
       .catch((err) => {
-        throw err
-      })
-  }
+        throw err;
+      });
+  };
 }
 
-module.exports = new userModel()
+module.exports = new UserModel();
