@@ -10,6 +10,7 @@
 
 const bookModel = require("../models/product.model");
 const cartModel = require("../models/cart.model");
+const addressModel = require("../models/address.model");
 
 class bookService {
   /**
@@ -47,5 +48,21 @@ class bookService {
       throw error;
     }
   };
+
+  addCustomerDetails = async (details) => {
+    try {
+      return await addressModel.addCustomerDetails(details);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getCustomerDetails = async (userId) => {
+    try {
+      return await addressModel.getCustomerDetails(userId)
+    } catch (error) {
+      throw error
+    }
+  }
 }
 module.exports = new bookService();

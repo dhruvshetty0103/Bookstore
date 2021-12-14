@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 //creation of schema for cart
 const CartSchema = mongoose.Schema(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, Ref: "User" },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     items: [
       {
         book: {
           type: mongoose.Schema.Types.ObjectId,
-          Ref: "Product",
+          ref: "Product",
         },
         quantity: {
           type: Number,
@@ -18,14 +18,12 @@ const CartSchema = mongoose.Schema(
         cost: {
           type: Number,
           required: true,
-        },
+        }
       },
     ],
   },
   {
     timestamps: true,
-    toObject : {virtuals:true},
-    toJSON : {virtuals : true}
   }
 );
 
@@ -38,6 +36,7 @@ class cartModel {
       book: cartDetails.book,
       quantity: cartDetails.quantity,
       cost: cartDetails.cost,
+      image:cartDetails.image
     };
     try {
       let cart = await Cart.findOne({ userId: userId });
@@ -83,7 +82,10 @@ class cartModel {
 
   getCart = async (userId) => {
     try {
-      let data = await Cart.findOne({ userId }).populate("userId", "firstName");
+      let data = await Cart.findOne({ userId }).populate({
+        path: "items.book",
+        select: ["title", "author", "price","image"],
+      });
       return data;
     } catch (error) {
       console.log(error);
