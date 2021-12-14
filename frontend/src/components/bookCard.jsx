@@ -6,11 +6,24 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
+import bookService from "../service/bookService";
 const BookCard = ({ item }) => {
   const [wishlist, setWishlist] = useState(false);
   const [cart, setCart] = useState(false);
   const handleCart = () => {
+    let data = {
+      book:item._id,
+      quantity:item.quantity,
+      cost:item.price
+    }
     setWishlist(true);
+    bookService.addCartBooks(data)
+    .then((res)=>{
+      console.log(res);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
   };
 
   const handleWishlist = () => {

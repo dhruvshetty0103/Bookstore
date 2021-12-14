@@ -221,7 +221,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <Typography component="h3" align="center">
-                  One account. All of Fundoo working for you.
+                  One account. All of Book Store working for you.
                 </Typography>
               </Grid>
             </Grid>

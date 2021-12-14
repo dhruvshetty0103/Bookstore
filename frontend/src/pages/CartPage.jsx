@@ -1,0 +1,45 @@
+import React, { useEffect} from "react";
+import { Redirect } from "react-router-dom";
+import Cart from "../components/cart";
+import Appbar from "../components/Appbar";
+import { Box } from "@mui/system";
+import bookService from "../service/bookService";
+import { setCartBooks } from "../actions/bookActions";
+import { useDispatch } from "react-redux";
+
+const CartPage = () => {
+  const token = localStorage.getItem("token");
+  console.log(token);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchitem();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchitem = () => {
+    bookService
+      .getCartBooks()
+      .then((res) => {
+        dispatch(setCartBooks(res.data.items));
+        console.log(res.data.items+"no items to display");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  if (token == null) {
+    return <>{<Redirect to="/login" />}</>;
+  } else {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <Appbar />
+        <Box component="main" className="book-container">
+          <Cart />
+        </Box>
+      </Box>
+    );
+  }
+};
+
+export default CartPage;
