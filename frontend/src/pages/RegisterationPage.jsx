@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import '../styles/registration.scss'
 import userService from '../service/userService'
 import RainbowText from 'react-rainbow-text'
+import accounts from '../assests/accounts.png'
 import {
   validPassword,
   validEmail,
@@ -217,11 +218,11 @@ export default function SignUp() {
             </Grid>
             <Grid item container xs={4}>
               <Grid item xs={12}>
-               
+                <img alt=" " src={accounts} width="100%" />
               </Grid>
               <Grid item xs={12}>
                 <Typography component="h3" align="center">
-                  One account. All of Book Store working for you.
+                  One account. All of BookStore working for you.
                 </Typography>
               </Grid>
             </Grid>
