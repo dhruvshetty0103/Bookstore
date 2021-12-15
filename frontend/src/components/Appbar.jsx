@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import {
   Toolbar,
@@ -15,38 +15,46 @@ import "../styles/home.scss";
 import { useSelector } from "react-redux";
 import { setFilteredBooks } from "../actions/bookActions";
 import { useDispatch } from "react-redux";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
+import bookService from "../service/bookService";
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   backgroundColor: "#A03037",
 }));
 
 const Appbar = () => {
-  const [search, setSearch] = useState("");
+  
   const myBooks = useSelector((state) => state.allBooks.books);
   const dispatch = useDispatch();
-  const handleSearch = (searchValue) => {
-    setSearch(searchValue);
-  };
+  
 
   useEffect(() => {
-    dispatch(
-      setFilteredBooks(
-        myBooks.filter((item) => {
-          return (
-            item.title.toLowerCase().includes(search.toLowerCase()) ||
-            item.author.toLowerCase().includes(search.toLowerCase())
-          );
-        })
-      )
-    );
+    dispatch(setFilteredBooks(myBooks));  
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, myBooks]);
+  }, [myBooks]);
 
+  const handleSearch = (searchValue) => {
+    if (searchValue.length >= 3) {
+      bookService
+        .searchBook({ searchTxt: searchValue })
+        .then((res) => {
+          dispatch(setFilteredBooks(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      dispatch(setFilteredBooks(myBooks));
+    }
+  };
   return (
     <AppBar position="fixed">
       <Toolbar>
-        <IconButton style={{ marginLeft: "5%" }} component={Link} to="/Dashboard">
+        <IconButton
+          style={{ marginLeft: "5%" }}
+          component={Link}
+          to="/Dashboard"
+        >
           <ImportContactsIcon fontSize="large" style={{ color: "white" }} />
         </IconButton>
         <Typography variant="h6" id="book-title">
@@ -74,7 +82,11 @@ const Appbar = () => {
         <Typography variant="h6" id="cart-title">
           Cart
         </Typography>
-        <IconButton style={{ color: "white", marginRight: "6%" }} component={Link} to="/cart">
+        <IconButton
+          style={{ color: "white", marginRight: "6%" }}
+          component={Link}
+          to="/cart"
+        >
           <ShoppingCartIcon fontSize="large" />
         </IconButton>
       </Toolbar>

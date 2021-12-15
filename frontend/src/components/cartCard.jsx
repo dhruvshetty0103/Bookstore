@@ -1,18 +1,52 @@
-import React, { useState } from "react";
-import { Typography, Grid, IconButton, Divider } from "@mui/material";
+import React from "react";
+import { Typography, Grid, IconButton, Divider, Button } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import "../styles/home.scss";
+import bookService from "../service/bookService";
+import { useDispatch } from "react-redux";
+import { deleteCart, updateCartQuantity } from "../actions/bookActions";
+
 const CartCard = ({ cart, item }) => {
-  const [count, setCount] = useState(item.quantity);
+  let count = item.quantity;
+  const dispatch = useDispatch();
+
+  const handleUpdate = (type) => {
+    let data = {
+      book: item.book._id,
+      quantity: item.quantity,
+      cost: item.cost,
+      counter: type,
+    };
+    bookService
+      .addCartBooks(data)
+      .then((res) => {
+        if (type === "increment") {
+          count++;
+        } else {
+          count--;
+        }
+        dispatch(updateCartQuantity({ book: item.book._id, quantity: count }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDelete = () => {
+    bookService
+      .removeCartBook(item.book._id)
+      .then((res) => {
+        dispatch(deleteCart(item.book._id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <Grid item container padding={1}>
       <Grid item xs={4}>
-        <img
-          className="bookImage"
-          src={item.book.image}
-          alt=""
-          
-        />
+        <img className="bookImage" src={item.book.image} alt="" />
       </Grid>
       <Grid item xs={8}>
         <div style={{ marginLeft: "10px" }}>
@@ -37,16 +71,24 @@ const CartCard = ({ cart, item }) => {
             align="left"
             style={{ marginTop: "5px", marginLeft: "0px" }}
           >
-            <IconButton onClick={() => setCount((prev) => prev - 1)}>
+            <IconButton
+              onClick={() => handleUpdate("decrement")}
+              disabled={count <= 1 ? true : false}
+            >
               <RemoveCircleOutlineIcon />
             </IconButton>
             <button style={{ border: "1px solid black", width: "30px" }}>
               {count}
             </button>
-            <IconButton onClick={() => setCount((prev) => prev + 1)}>
+            <IconButton onClick={() => handleUpdate("increment")}>
               <AddCircleOutlineIcon />
             </IconButton>
-            <span>remove</span>
+            <Button
+              onClick={handleDelete}
+              style={{ textTransform: "none", color: "black" }}
+            >
+              Remove
+            </Button>
           </Typography>
         )}
       </Grid>

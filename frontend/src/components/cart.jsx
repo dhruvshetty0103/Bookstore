@@ -15,18 +15,12 @@ const Cart = () => {
   let total = 0;
   let numberOfBooks = 0;
   const myBooks = useSelector((state) => state.allBooks.cartBooks);
-  console.log(myBooks);
   return (
     <Grid container>
       <Grid
         item
         container
-        style={{
-          border: "1px solid black",
-          width: "60%",
-          margin: "4% auto 2% auto",
-          padding: "1%",
-        }}
+        id="cartContainer"
       >
         <Grid item xs={4}>
           <Typography style={{ marginBottom: "15px", fontSize: "20px" }}>
@@ -46,12 +40,7 @@ const Cart = () => {
       <Grid
         item
         container
-        style={{
-          border: "1px solid black",
-          width: "60%",
-          margin: "0% auto 2% auto",
-          padding: "1%",
-        }}
+        id="cartContainer"
       >
         <Grid item xs={12}>
           <Accordion elevation={0}>

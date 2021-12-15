@@ -63,12 +63,7 @@ const CustomerAddress = () => {
     <Grid
       item
       container
-      style={{
-        border: "1px solid black",
-        width: "60%",
-        margin: "0% auto 2% auto",
-        padding: "1%",
-      }}
+      id="cartContainer"
     >
       <Grid item xs={12}>
         <Accordion elevation={0}>

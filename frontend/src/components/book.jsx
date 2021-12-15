@@ -13,6 +13,12 @@ import { useDispatch } from "react-redux";
 import bookService from "../service/bookService";
 import { setBooks } from "../actions/bookActions";
 import BookCard from "./bookCard";
+import styled from "@emotion/styled";
+
+const Paginations = styled(Pagination)(({ theme }) => ({
+  color: "#A03037",
+}));
+
 const Book = () => {
   const myBooks = useSelector((state) => state.allBooks.filteredbooks);
   const numberOfBooks = myBooks.length;
@@ -38,6 +44,10 @@ const Book = () => {
       .catch((err) => {
         console.log(err);
       });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleDisplayOrder = (order) => {
@@ -90,20 +100,19 @@ const Book = () => {
 
       <Grid container spacing={4}>
         {myBooks.map((item, index) => {
-          return (
-            <Grid item xs={12} sm={6} md={3} key={item._id}>
-              <BookCard item={item} />
-            </Grid>
-          );
+          return <BookCard item={item} key={index} />;
         })}
-        <Pagination
+      </Grid>
+
+      <div id="pagination">
+        <Paginations
           count={5}
           shape="rounded"
           color="primary"
           onChange={(event, page) => handlePagination(page)}
           style={{ margin: "20px auto" }}
         />
-      </Grid>
+      </div>
     </Box>
   );
 };
