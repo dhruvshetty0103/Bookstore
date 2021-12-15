@@ -28,14 +28,8 @@ class bookController {
   };
 
   addToCart = async (req, res) => {
-    let cartDetails = {
-      userId: req.body.userId,
-      book: req.body.book,
-      quantity: req.body.quantity,
-      cost: req.body.cost,
-    };
     try {
-      let data = await bookService.addToCart(cartDetails);
+      let data = await bookService.addToCart(req.body);
       return res.status(200).json(data);
     } catch (error) {
       return res.status(500).send("error");
@@ -53,7 +47,7 @@ class bookController {
 
   addCustomerDetails = async (req,res) => {
     try {
-      let data = await bookService.addCustomerDetails(req.body)
+      let data = await bookService.addCustomerDetails(req.body);
       return res.status(200).json(data);
     } catch (error) {
       return res.status(500).json(error);
@@ -67,6 +61,29 @@ class bookController {
       return res.status(200).json(data);
     } catch (error) {
       return res.status(500).json(error);
+    }
+  };
+
+  deleteCartProduct = async (req, res) => {
+    try {
+      let data = await bookService.deleteCartProduct(
+        req.body.userId,
+        req.params.id
+      );
+      return res.status(200).json(data);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  };
+
+  searchBook = async (req, res) => {
+    try {
+      let data = await bookService.searchBook(req.body);
+      logger.info("search book succussfull");
+      return res.status(200).send(data);
+    } catch (error) {
+      logger.error(err);
+      return res.status(500).send(err);
     }
   };
 }

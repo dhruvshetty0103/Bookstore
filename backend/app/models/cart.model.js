@@ -18,7 +18,7 @@ const CartSchema = mongoose.Schema(
         cost: {
           type: Number,
           required: true,
-        }
+        },
       },
     ],
   },
@@ -36,26 +36,42 @@ class cartModel {
       book: cartDetails.book,
       quantity: cartDetails.quantity,
       cost: cartDetails.cost,
-      image:cartDetails.image
+      image:cartDetails.image,
     };
     try {
       let cart = await Cart.findOne({ userId: userId });
       if (cart) {
-        const product = cart.items.find((item) => item.book == itemList.book);
+        const product = cart.items.find((item) => {
+          return item.book == itemList.book;
+        });
 
         if (product) {
-          return await Cart.findOneAndUpdate(
-            { userId: userId, "items.book": itemList.book },
-            {
-              $set: {
-                "items.$": {
-                  ...itemList,
-                  quantity: product.quantity + 1,
+          if (cartDetails.counter == "increment") {
+            return await Cart.findOneAndUpdate(
+              { userId: userId, "items.book": itemList.book },
+              {
+                $set: {
+                  "items.$": {
+                    ...itemList,
+                    quantity: product.quantity + 1,
+                  },
                 },
               },
-            },
-            { new: true }
-          );
+              { new: true }
+              );
+            } else {
+              return await Cart.findOneAndUpdate(
+                { userId: userId, "items.book": itemList.book },
+                {
+                  $set: {
+                    "items.$": {
+                      ...itemList,
+                      quantity: product.quantity - 1,
+                    },
+                  },
+                }
+              );
+            }
         } else {
           return await Cart.findOneAndUpdate(
             { userId: userId },
@@ -89,6 +105,21 @@ class cartModel {
       return data;
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+  };
+  deleteCartProduct = async (userId, bookId) => {
+    try {
+      let user = await Cart.findOne({ userId: userId });
+      let newItems = user.items.filter((item) => {
+        return item.book != bookId;
+      });
+      return await Cart.findOneAndUpdate(
+        { userId: userId },
+        { items: newItems },
+        { new: true }
+      );
+    } catch (error) {
       throw error;
     }
   };

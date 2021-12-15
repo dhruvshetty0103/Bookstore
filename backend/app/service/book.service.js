@@ -59,10 +59,33 @@ class bookService {
 
   getCustomerDetails = async (userId) => {
     try {
-      return await addressModel.getCustomerDetails(userId)
+      return await addressModel.getCustomerDetails(userId);
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
+  };
+
+  deleteCartProduct = async (userId, book) => {
+    try {
+      return await cartModel.deleteCartProduct(userId, book);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  searchBook = async (body) => {
+    try {
+      let data = await bookModel.findAll();
+      let filteredData = data.filter((item) => {
+        return (
+          item.title.toLowerCase().includes(body.searchTxt.toLowerCase()) ||
+          item.author.toLowerCase().includes(body.searchTxt.toLowerCase())
+        );
+      });
+      return filteredData;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 module.exports = new bookService();

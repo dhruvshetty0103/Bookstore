@@ -18,5 +18,7 @@ bookRoute.post("/add-to-cart", bookMiddleware.ensureToken, bookController.addToC
 bookRoute.get("/cart",bookMiddleware.ensureToken, bookController.getCart)
 bookRoute.post("/customer-details", bookMiddleware.ensureToken, bookController.addCustomerDetails)
 bookRoute.get("/customer-details", bookMiddleware.ensureToken, bookController.getCustomerDetails)
+bookRoute.delete("/cart/:id", bookMiddleware.ensureToken, bookController.deleteCartProduct)
+bookRoute.post("/search", bookMiddleware.ensureToken, bookController.searchBook)
 bookRoute.get("/:index",bookMiddleware.ensureToken,bookController.findAll);
 module.exports = bookRoute;
