@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Execution        : 1. default node  cmd> nodemon server.js
+ * @descrition      : user model creates user schema and performs db operation
+ * @file            : cart.model.js
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
 const mongoose = require("mongoose");
 
 //creation of schema for cart
@@ -30,6 +39,10 @@ const CartSchema = mongoose.Schema(
 const Cart = mongoose.model("Cart", CartSchema);
 
 class cartModel {
+  /**
+   * @description adds books to cart
+   * @returns err or data
+   */
   addToCart = async (cartDetails) => {
     let userId = cartDetails.userId;
     let itemList = {
@@ -96,6 +109,10 @@ class cartModel {
     }
   };
 
+  /**
+   * @description gets all books present in cart
+   * @returns err or data
+   */
   getCart = async (userId) => {
     try {
       let data = await Cart.findOne({ userId }).populate({
@@ -108,6 +125,11 @@ class cartModel {
       throw error;
     }
   };
+
+  /**
+   * @description deletes book from cart
+   * @returns err or data
+   */
   deleteCartProduct = async (userId, bookId) => {
     try {
       let user = await Cart.findOne({ userId: userId });

@@ -27,62 +27,102 @@ class bookController {
     }
   };
 
+  /**
+   * @description Handles the request and response for adding books to cart
+   * @param {Object} req
+   * @param {Object} res
+   */
   addToCart = async (req, res) => {
     try {
       let data = await bookService.addToCart(req.body);
+      logger.info(data);
       return res.status(200).json(data);
     } catch (error) {
+      logger.error(error);
       return res.status(500).send("error");
     }
   };
 
+  /**
+   * @description Handles the request and response for getting all books from cart
+   * @param {Object} req
+   * @param {Object} res
+   */
   getCart = async (req, res) => {
     try {
+      logger.info(data);
       let data = await bookService.getCart(req.body.userId);
       return res.status(200).json(data);
     } catch (error) {
+      logger.error(error);
       return res.status(404).json(error);
     }
   };
 
-  addCustomerDetails = async (req,res) => {
+  /**
+   * @description Handles the request and response for adding customer details
+   * @param {Object} req
+   * @param {Object} res
+   */
+  addCustomerDetails = async (req, res) => {
     try {
       let data = await bookService.addCustomerDetails(req.body);
+      logger.info(data);
       return res.status(200).json(data);
     } catch (error) {
-      return res.status(500).json(error);
-    }
-  }
-
-  getCustomerDetails = async (req, res) => {
-    const userId = req.body.userId;
-    try {
-      let data = await bookService.getCustomerDetails(userId);
-      return res.status(200).json(data);
-    } catch (error) {
+      logger.error(error);
       return res.status(500).json(error);
     }
   };
 
+  /**
+   * @description Handles the request and response for getting customer details
+   * @param {Object} req
+   * @param {Object} res
+   */
+  getCustomerDetails = async (req, res) => {
+    const userId = req.body.userId;
+    try {
+      let data = await bookService.getCustomerDetails(userId);
+      logger.info(data);
+      return res.status(200).json(data);
+    } catch (error) {
+      logger.error(error);
+      return res.status(500).json(error);
+    }
+  };
+
+  /**
+   * @description Handles the request and response for deleting books from cart
+   * @param {Object} req
+   * @param {Object} res
+   */
   deleteCartProduct = async (req, res) => {
     try {
       let data = await bookService.deleteCartProduct(
         req.body.userId,
         req.params.id
       );
+      logger.info(data);
       return res.status(200).json(data);
     } catch (error) {
+      logger.error(error);
       return res.status(500).json(error);
     }
   };
 
+  /**
+   * @description Handles the request and response for searching books
+   * @param {Object} req
+   * @param {Object} res
+   */
   searchBook = async (req, res) => {
     try {
       let data = await bookService.searchBook(req.body);
       logger.info("search book succussfull");
       return res.status(200).send(data);
     } catch (error) {
-      logger.error(err);
+      logger.error(error);
       return res.status(500).send(err);
     }
   };
