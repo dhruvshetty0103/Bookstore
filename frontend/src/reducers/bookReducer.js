@@ -30,7 +30,6 @@ export const bookReducer = (state = initialState, { type, payload }) => {
           }
           return item
         });
-        console.log(updatedCartQuantity,"hi");
         return { ...state, cartBooks: updatedCartQuantity };
 
     default:

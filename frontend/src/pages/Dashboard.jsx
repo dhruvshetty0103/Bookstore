@@ -7,7 +7,7 @@ import bookService from "../service/bookService";
 import {setBooks} from "../actions/bookActions"
 import { useDispatch } from "react-redux";
 const Dashboard = () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const dispatch = useDispatch();
   useEffect(() => {
     fetchitem();
@@ -29,7 +29,7 @@ const Dashboard = () => {
     return <>{<Redirect to="/login" />}</>;
   } else {
     return (
-      <Box sx={{ display: "flex" }}>
+      <Box id="dashboardBox">
         <Appbar />
         <Box component="main" className="book-container">
           <Book/>

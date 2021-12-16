@@ -16,7 +16,11 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import bookService from "../service/bookService";
 
-const CustomerAddress = () => {
+const CustomerAddress = ({
+  expanded,
+  handleExpanded,
+  handleExpandedSummary,
+}) => {
   const initialUserState = {
     name: "",
     phone: "",
@@ -42,7 +46,9 @@ const CustomerAddress = () => {
     bookService
       .getCustDetails()
       .then((res) => {
-        setDetails(res.data);
+        if (res.data !== null) {
+          setDetails(res.data);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -50,6 +56,8 @@ const CustomerAddress = () => {
   };
 
   const handleUpdate = () => {
+    handleExpanded();
+    handleExpandedSummary();
     bookService
       .addCustDetails(details)
       .then((res) => {
@@ -60,13 +68,9 @@ const CustomerAddress = () => {
       });
   };
   return (
-    <Grid
-      item
-      container
-      id="cartContainer"
-    >
+    <Grid item container id="cartContainer">
       <Grid item xs={12}>
-        <Accordion elevation={0}>
+        <Accordion elevation={0} expanded={expanded} onChange={handleExpanded}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"

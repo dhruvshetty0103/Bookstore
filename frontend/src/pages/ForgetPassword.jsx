@@ -65,7 +65,7 @@ const ForgetPassword = () => {
             </Button>
           </Grid>
           <Grid item xs={6} align="right">
-            <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" id="submit">
               Submit
             </Button>
           </Grid>

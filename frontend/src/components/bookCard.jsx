@@ -35,13 +35,21 @@ const BookCard = ({ item }) => {
     setCart(true);
   };
 
+  const [over, setOver] = useState(false);
+
   return (
     <Grid item xs={12} sm={6} md={3}>
-      <Card sx={{ height: 345 }} onClick={() => setIsOpen(true)}>
-        <div className="imageContainer">
+      <Card
+        sx={{ height: 345 }}
+        onMouseOver={() => setOver(true)}
+        onMouseOut={() => setOver(false)}
+        elevation={over ? 10 : 4}
+      >
+        <div className="imageContainer" onClick={() => setIsOpen(true)}>
           <img className="bookImage" src={item.image} alt="" />
         </div>
-        <CardContent>
+        
+        <CardContent onClick={() => setIsOpen(true)}>
           <Typography align="left" className="item-content">
             {item.title}
           </Typography>

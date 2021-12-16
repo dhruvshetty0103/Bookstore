@@ -44,13 +44,10 @@ const Login = () => {
         .login(data)
         .then((response) => {
           if (response.data.status === 200) {
-            localStorage.setItem("Account",data.email)
-            localStorage.setItem('token', response.data.message.token)
-            console.log("Login successfully");
+            sessionStorage.setItem("token", response.data.message.token);
             setSuccess(true)
           } else {
             console.log("Login failed");
-            console.log(response.data);
           }
         })
         .catch((e) => {

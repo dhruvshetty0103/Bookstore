@@ -11,17 +11,24 @@ import React from "react";
 import { useSelector } from "react-redux";
 import CartCard from "./cartCard";
 import CustomerAddress from "./customerAddress";
+import { Link } from "react-router-dom";
+
 const Cart = () => {
+  const [expanded, setExpanded] = React.useState(false);
+  const [expandedSummary, setExpandedSummary] = React.useState(false);
   let total = 0;
   let numberOfBooks = 0;
   const myBooks = useSelector((state) => state.allBooks.cartBooks);
+  const handleExpanded = () => {
+    setExpanded((prev) => !prev);
+  };
+
+  const handleExpandedSummary = () => {
+    setExpandedSummary((prev) => !prev);
+  };
   return (
     <Grid container>
-      <Grid
-        item
-        container
-        id="cartContainer"
-      >
+      <Grid item container id="cartContainer">
         <Grid item xs={4}>
           <Typography style={{ marginBottom: "15px", fontSize: "20px" }}>
             My Cart({myBooks.length})
@@ -33,17 +40,25 @@ const Cart = () => {
         })}
 
         <Grid item xs={12} align="right">
-          <Button variant="contained">Place order</Button>
+          <Button variant="contained" onClick={handleExpanded}>
+            Place order
+          </Button>
         </Grid>
       </Grid>
-      <CustomerAddress />
-      <Grid
-        item
-        container
-        id="cartContainer"
-      >
+
+      <CustomerAddress
+        expanded={expanded}
+        handleExpanded={handleExpanded}
+        handleExpandedSummary={handleExpandedSummary}
+      />
+
+      <Grid item container id="cartContainer">
         <Grid item xs={12}>
-          <Accordion elevation={0}>
+          <Accordion
+            elevation={0}
+            expanded={expandedSummary}
+            onChange={handleExpandedSummary}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -63,7 +78,9 @@ const Cart = () => {
                 <Typography>Total Price : {total}</Typography>
               </Grid>
               <Grid item xs={12} align="right">
-                <Button variant="contained">checkout</Button>
+                <Button variant="contained" component={Link} to="/order">
+                  checkout
+                </Button>
               </Grid>
             </AccordionDetails>
           </Accordion>

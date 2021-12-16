@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
-import {
-  Toolbar,
-  Typography,
-  IconButton,
-  TextField,
-  InputAdornment,
-} from "@mui/material";
+import {Toolbar,Typography,IconButton} from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -60,25 +54,15 @@ const Appbar = () => {
         <Typography variant="h6" id="book-title">
           BookStore
         </Typography>
-        <TextField
-          placeholder="Search…"
-          id="search-bar"
-          variant="outlined"
-          onChange={(e) => handleSearch(e.target.value)}
-          style={{ margin: "0px 25% 0px 5%" }}
-          size="small"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton>
-                  <SearchIcon id="search-icon" />
-                </IconButton>
-              </InputAdornment>
-            ),
-            style: { height: "40px", backgroundColor: "white" },
-          }}
-        />
+        <div id="searchDiv">
+          <SearchIcon id="search-icon" />
+          <input
+            type="text"
+            placeholder="Search…"
+            id="search-bar"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </div>
         <Typography variant="h6" id="cart-title">
           Cart
         </Typography>
