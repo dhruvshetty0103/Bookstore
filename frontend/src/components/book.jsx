@@ -20,6 +20,7 @@ const Paginations = styled(Pagination)(({ theme }) => ({
 }));
 
 const Book = () => {
+  const token = sessionStorage.getItem("token");
   const myBooks = useSelector((state) => state.allBooks.filteredbooks);
   const numberOfBooks = myBooks.length;
 
@@ -35,15 +36,17 @@ const Book = () => {
   };
 
   const handlePagination = (index) => {
-    bookService
-      .getBooks(index)
-      .then((res) => {
-        console.log(res.data);
-        dispatch(setBooks(res.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (token !== null) {
+      bookService
+        .getBooks(index, token)
+        .then((res) => {
+          console.log(res.data);
+          dispatch(setBooks(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
     window.scrollTo({
       top: 0,
       behavior: "smooth",

@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 
 const CartPage = () => {
   const token = sessionStorage.getItem("token");
-  console.log(token);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,7 +22,6 @@ const CartPage = () => {
     .getCartBooks(token)
       .then((res) => {
         dispatch(setCartBooks(res.data.items));
-        console.log(res.data.items+"no items to display");
       })
       .catch((err) => {
         console.log(err);

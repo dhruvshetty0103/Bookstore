@@ -3,6 +3,26 @@ import userService from "../service/userService";
 import { Link } from "react-router-dom";
 import { Grid, TextField, Typography, Button, Paper } from "@mui/material";
 import "../styles/form.scss";
+import { withStyles } from "@mui/styles";
+
+const InputField = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "#A03037",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#A03037",
+      },
+      "&:hover fieldset": {
+        borderColor: "#A03037",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#A03037",
+      },
+    },
+  },
+})(TextField);
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -42,13 +62,15 @@ const ForgetPassword = () => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h5">Reset your Fundoo Note password</Typography>
+            <Typography variant="h5">
+              Reset your Fundoo Note password
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="p">Enter your Fundoo Note email</Typography>
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <InputField
               id="email"
               label="Email eg:name@gmail.com"
               variant="outlined"
@@ -65,7 +87,7 @@ const ForgetPassword = () => {
             </Button>
           </Grid>
           <Grid item xs={6} align="right">
-          <Button variant="contained" type="submit" id="submit">
+            <Button variant="contained" type="submit" id="submit">
               Submit
             </Button>
           </Grid>

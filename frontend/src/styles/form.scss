@@ -33,6 +33,12 @@
   }
 }
 
+@media screen and (max-width: 600px) {
+  #book-logo {
+    display: none;
+  }
+}
+
 @media screen and (min-width: 400px) and (max-width: 700px) {
   #login-form,
   #registeration-form,
@@ -51,4 +57,11 @@
     width: 70%;
     margin: 5% auto;
   }
+}
+
+#book-logo {
+  width: 90%;
+  height: 400px;
+  margin-left: 15px;
+  color: #a03037;
 }

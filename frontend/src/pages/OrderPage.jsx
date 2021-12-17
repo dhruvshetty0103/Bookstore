@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import Appbar from "../components/appbar";
+import Appbar from "../components/Appbar";
 import { Box } from "@mui/system";
 import Order from "../components/order";
 

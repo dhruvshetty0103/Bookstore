@@ -1,7 +1,6 @@
 import AxiosHelper from "../helper/axios";
 
-const getBooks = (index) => {
-  let token = sessionStorage.getItem("token");
+const getBooks = (index,token) => {
   let reqobj = {
     method: "get",
     url: "http://localhost:4000/books/" + index,
@@ -38,6 +37,7 @@ const getCartBooks = (token) => {
 const addCartBooks = (data) => {
   let token = sessionStorage.getItem("token");
   let reqobj = {
+
     method: "post",
     url: "http://localhost:4000/books/add-to-cart",
     headers: {
@@ -65,7 +65,6 @@ const getCustDetails = () => {
   };
   return AxiosHelper.get(reqobj)
     .then((response) => {
-      console.log(response, "this some ");
       return response;
     })
     .catch((err) => {
@@ -129,6 +128,25 @@ const searchBook = (searchVal) => {
       throw err;
     });
 };
+
+const addOrder = (data) => {
+  let token = sessionStorage.getItem("token");
+  let reqobj = {
+    method: "post",
+    url: "http://localhost:4000/books/create-order",
+    headers: {
+      authorization: `bearer ${token}`,
+    },
+    data: data,
+  };
+  return AxiosHelper.post(reqobj)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   getBooks,
@@ -138,4 +156,5 @@ export default {
   addCartBooks,
   removeCartBook,
   searchBook,
+  addOrder
 };

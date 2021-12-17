@@ -11,6 +11,26 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import "../styles/form.scss";
+import { withStyles } from "@mui/styles"
+
+const InputField = withStyles({
+  root:{
+      "& label.Mui-focused":{
+          color:"#A03037"
+      },
+      "& .MuiOutlinedInput-root":{
+          "& fieldset":{
+              borderColor:"#A03037"
+          },
+          "&:hover fieldset":{
+              borderColor:"#A03037"
+          },
+          "&.Mui-focused fieldset":{
+              borderColor:"#A03037"
+          }
+      }
+  }
+})(TextField)
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -75,7 +95,7 @@ const Login = () => {
             <Typography variant="p">to continue to Fundoo Notes</Typography>
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <InputField
               id="email"
               label="Email eg:name@gmail.com"
               variant="outlined"
@@ -87,7 +107,7 @@ const Login = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <InputField
               id="password"
               label="password"
               type={showPassword ? "text" : "password"}

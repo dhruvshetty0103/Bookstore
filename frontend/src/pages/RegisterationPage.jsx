@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
-import '../styles/registration.scss'
-import userService from '../service/userService'
-import RainbowText from 'react-rainbow-text'
-import accounts from '../assests/accounts.png'
+import React, { useState } from "react";
+import "../styles/registration.scss";
+import userService from "../service/userService";
+import RainbowText from "react-rainbow-text";
 import {
   validPassword,
   validEmail,
   validFirstName,
   validLastName,
-} from '../config/FormValidation'
+} from "../config/FormValidation";
 import {
   Button,
   TextField,
@@ -16,94 +15,117 @@ import {
   Checkbox,
   Grid,
   Paper,
-  Typography
-} from '@mui/material'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Link } from 'react-router-dom'
-const theme = createTheme()
+  Typography,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link } from "react-router-dom";
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import { withStyles } from "@mui/styles";
+
+const theme = createTheme();
+
+
+const InputField = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "#A03037",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#A03037",
+      },
+      "&:hover fieldset": {
+        borderColor: "#A03037",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#A03037",
+      },
+    },
+  },
+})(TextField);
 
 export default function SignUp() {
   const initialUserState = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  }
-  const [user, setUser] = useState(initialUserState)
-  const [firstNameError, setFirstNameError] = useState(false)
-  const [lastNameError, setLastNameError] = useState(false)
-  const [emailError, setEmailError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
-  const [confirmPasswordError, setPasswordConfirmError] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+  const [user, setUser] = useState(initialUserState);
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setPasswordConfirmError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setUser({ ...user, [name]: value })
-  }
+    const { name, value } = event.target;
+    setUser({ ...user, [name]: value });
+  };
 
   const handleSubmit = (e) => {
-    let errorFlag = false
-    e.preventDefault()
-    setFirstNameError(false)
-    setLastNameError(false)
-    setEmailError(false)
-    setPasswordError(false)
-    setPasswordConfirmError(false)
+    let errorFlag = false;
+    e.preventDefault();
+    setFirstNameError(false);
+    setLastNameError(false);
+    setEmailError(false);
+    setPasswordError(false);
+    setPasswordConfirmError(false);
     if (!validFirstName.test(user.firstName)) {
-      errorFlag = true
-      setFirstNameError(true)
+      errorFlag = true;
+      setFirstNameError(true);
     }
     if (!validLastName.test(user.lastName)) {
-      errorFlag = true
-      setLastNameError(true)
+      errorFlag = true;
+      setLastNameError(true);
     }
     if (!validEmail.test(user.email)) {
-      errorFlag = true
-      setEmailError(true)
+      errorFlag = true;
+      setEmailError(true);
     }
     if (!validPassword.test(user.password)) {
-      errorFlag = true
-      setPasswordError(true)
+      errorFlag = true;
+      setPasswordError(true);
     }
     if (user.password !== user.confirmPassword) {
-      errorFlag = true
-      setPasswordConfirmError(true)
+      errorFlag = true;
+      setPasswordConfirmError(true);
     }
 
     if (errorFlag) {
-      console.log('Enter the correct details')
+      console.log("Enter the correct details");
     } else {
       let data = {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
         password: user.password,
-      }
+      };
       userService
         .register(data)
         .then((response) => {
-          console.log('Registered successfully')
-          console.log(response.data)
+          console.log("Registered successfully");
+          console.log(response.data);
         })
         .catch((e) => {
-          console.log('Registeration failed')
-          console.log(e)
-        })
+          console.log("Registeration failed");
+          console.log(e);
+        });
     }
-  }
+  };
 
   return (
     <form id="registeration-form" onSubmit={handleSubmit} autoComplete="off">
-      <Paper elevation={5} sx={{ p: 2 }}>
+      <Paper elevation={5} sx={{ p: 3 }}>
         <ThemeProvider theme={theme}>
           <Grid container spacing={2}>
-            <Grid item container xs={8} spacing={1}>
+            <Grid item container spacing={1} xs={12} sm={8}>
               <Grid item xs={12}>
                 <Typography variant="h3" align="left">
                   <RainbowText lightness={0.5} saturation={1}>
@@ -116,8 +138,8 @@ export default function SignUp() {
                   Sign Up
                 </Typography>
               </Grid>
-              <Grid item xs={6} >
-                <TextField
+              <Grid item xs={6}>
+                <InputField
                   autoComplete="given-name"
                   name="firstName"
                   required
@@ -125,27 +147,27 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   error={firstNameError}
-                  helperText={firstNameError ? 'Invalid first name' : ''}
+                  helperText={firstNameError ? "Invalid first name" : ""}
                   value={user.firstName}
                   onChange={handleInputChange}
                   autoFocus
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
+                <InputField
                   required
                   fullWidth
                   name="lastName"
                   id="lastName"
                   label="Last Name"
                   error={lastNameError}
-                  helperText={lastNameError ? 'Invalid last name' : ''}
+                  helperText={lastNameError ? "Invalid last name" : ""}
                   value={user.lastName}
                   onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <InputField
                   required
                   fullWidth
                   id="email"
@@ -156,45 +178,45 @@ export default function SignUp() {
                   error={emailError}
                   helperText={
                     emailError
-                      ? 'Invalid email'
-                      : 'You can use letters,numbers & periods'
+                      ? "Invalid email"
+                      : "You can use letters,numbers & periods"
                   }
                   value={user.email}
                   onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
+                <InputField
                   required
                   fullWidth
                   id="password"
                   name="password"
                   label="Password"
                   variant="outlined"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={user.password}
                   onChange={handleInputChange}
                   error={passwordError}
                   helperText={
                     passwordError
-                      ? 'Invalid password'
-                      : 'Use 8 or more characters with a mix of letters, numbers & symbols'
+                      ? "Invalid password"
+                      : "Use 8 or more characters with a mix of letters, numbers & symbols"
                   }
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
+                <InputField
                   required
                   fullWidth
                   id="confirmPassword"
                   name="confirmPassword"
                   label="Confirm Password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={user.confirmPassword}
                   onChange={handleInputChange}
                   error={confirmPasswordError}
                   helperText={
-                    confirmPasswordError ? 'Password doesnt match' : ''
+                    confirmPasswordError ? "Password doesnt match" : ""
                   }
                 />
               </Grid>
@@ -218,7 +240,7 @@ export default function SignUp() {
             </Grid>
             <Grid item container xs={4}>
               <Grid item xs={12}>
-                <img alt=" " src={accounts} width="100%" />
+                <LocalLibraryIcon id="book-logo" />
               </Grid>
               <Grid item xs={12}>
                 <Typography component="h3" align="center">
@@ -230,5 +252,5 @@ export default function SignUp() {
         </ThemeProvider>
       </Paper>
     </form>
-  )
+  );
 }

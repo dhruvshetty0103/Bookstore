@@ -15,15 +15,16 @@ const Dashboard = () => {
   }, []);
 
   const fetchitem = () => {
-    bookService
-      .getBooks(1)
+    if(token !== null){
+      bookService
+      .getBooks(1,token)
       .then((res) => {
-        console.log(res);
         dispatch(setBooks(res.data));
       })
       .catch((err) => {
         console.log(err);
       });
+    }
   };
   if (token == null) {
     return <>{<Redirect to="/login" />}</>;
