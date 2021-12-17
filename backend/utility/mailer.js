@@ -1,20 +1,21 @@
 var nodemailer = require('nodemailer');
+require('dotenv').config();
 
 class nodeMailer{
   mailer = (email,token) =>{
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'sender@email.com',
-        pass: 'senderPassword'
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
       }
     });
     
     var mailOptions = {
-      from: 'sender@email.com',
+      from: process.env.EMAIL,
       to: email,
       subject: 'Sending Email using Node.js',
-      html: `<a>${token}</a>`,
+      html: `<a href='http://localhost:3000/reset/${token}'>click here</a>`,
       text: "password reset"
     };
     
