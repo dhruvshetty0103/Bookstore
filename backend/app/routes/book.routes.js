@@ -34,4 +34,6 @@ bookRoute.post("/search", bookMiddleware.ensureToken, bookController.searchBook)
 // finds all book based on page index
 bookRoute.get("/:index",bookMiddleware.ensureToken,bookController.findAll);
 
+bookRoute.post("/create-order",bookMiddleware.ensureToken,bookController.createOrder);
+
 module.exports = bookRoute;

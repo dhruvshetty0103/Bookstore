@@ -50,8 +50,8 @@ class bookController {
    */
   getCart = async (req, res) => {
     try {
-      logger.info(data);
       let data = await bookService.getCart(req.body.userId);
+      logger.info(data);
       return res.status(200).json(data);
     } catch (error) {
       logger.error(error);
@@ -124,6 +124,22 @@ class bookController {
     } catch (error) {
       logger.error(error);
       return res.status(500).send(err);
+    }
+  };
+
+  /**
+   * @description Handles the request and response for creation of order
+   * @param {Object} req
+   * @param {Object} res
+   */
+  createOrder = async (req, res) => {
+    try {
+      let data = await bookService.createOrder(req.body);
+      logger.info("create order successfull");
+      return res.status(200).send(data);
+    } catch (error) {
+      logger.error(error);
+      return res.status(500).send(error);
     }
   };
 }

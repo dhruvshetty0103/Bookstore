@@ -12,6 +12,7 @@ const bookModel = require("../models/product.model");
 const cartModel = require("../models/cart.model");
 const addressModel = require("../models/address.model");
 const logger = require("../../utility/logger");
+const orderModel = require("../models/order.model");
 
 class bookService {
   /**
@@ -112,6 +113,17 @@ class bookService {
       return filteredData;
     } catch (error) {
       logger.error(error);
+      throw error;
+    }
+  };
+
+  createOrder = async (body) => {
+    //generate random orderID
+    let orderID = Date.now();
+    try {
+      let data = await orderModel.createOrder(orderID, body);
+      return data;
+    } catch (error) {
       throw error;
     }
   };
