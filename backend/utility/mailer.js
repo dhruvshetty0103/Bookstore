@@ -24,7 +24,7 @@ class nodeMailer{
         return "Email sent successfully!!";
       })
       .catch((err) => {
-        return err;
+        throw err;
       });
 
   }

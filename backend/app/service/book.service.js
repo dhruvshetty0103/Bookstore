@@ -127,5 +127,18 @@ class bookService {
       throw error;
     }
   };
+
+  /**
+   * @description Service layer function to remove cart details from database
+   * @returns error or data
+   */
+   removeCart = async (userId) => {
+    try {
+      let data = await cartModel.removeCart(userId);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 module.exports = new bookService();

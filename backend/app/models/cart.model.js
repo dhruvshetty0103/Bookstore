@@ -144,6 +144,19 @@ class cartModel {
       throw error;
     }
   };
+
+  /**
+   * @description Query to delete cart after order is being placed
+   * @param userId
+   * @returns error or cart&book details
+   */
+   removeCart = async (userId) => {
+    try {
+      return await Cart.findOneAndRemove({ userId: userId });
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 module.exports = new cartModel();

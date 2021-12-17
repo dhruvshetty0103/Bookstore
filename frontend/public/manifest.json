@@ -3,7 +3,7 @@
   "name": "Create React App Sample",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "book-logo.jpg",
       "sizes": "192x192",
       "type": "image/png"
     }

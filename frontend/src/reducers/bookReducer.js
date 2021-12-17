@@ -3,7 +3,7 @@ import { ActionTypes } from "../constants/action-types";
 const initialState = {
   books: [],
   filteredbooks: [],
-  cartBooks:[],
+  cartBooks: [],
 };
 
 export const bookReducer = (state = initialState, { type, payload }) => {
@@ -17,20 +17,23 @@ export const bookReducer = (state = initialState, { type, payload }) => {
     case ActionTypes.SET_CART_BOOKS:
       return { ...state, cartBooks: payload };
 
-      case ActionTypes.DELETE_CART_BOOK:
-        let updatedCart = state.cartBooks.filter(
-          (book) => book.book._id !== payload
-        );
-        return { ...state, cartBooks: updatedCart };
-  
-      case ActionTypes.UPDATE_CART_QUANTITY:
-        let updatedCartQuantity = state.cartBooks.map((item)=>{
-          if( item.book._id === payload.book){
-            item.quantity = payload.quantity
-          }
-          return item
-        });
-        return { ...state, cartBooks: updatedCartQuantity };
+    case ActionTypes.DELETE_CART_BOOK:
+      let updatedCart = state.cartBooks.filter(
+        (book) => book.book._id !== payload
+      );
+      return { ...state, cartBooks: updatedCart };
+
+    case ActionTypes.UPDATE_CART_QUANTITY:
+      let updatedCartQuantity = state.cartBooks.map((item) => {
+        if (item.book._id === payload.book) {
+          item.quantity = payload.quantity;
+        }
+        return item;
+      });
+      return { ...state, cartBooks: updatedCartQuantity };
+      
+    case ActionTypes.EMPTY_CART:
+      return { ...state, cartBooks: [] };
 
     default:
       return state;

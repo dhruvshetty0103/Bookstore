@@ -24,7 +24,6 @@ import { withStyles } from "@mui/styles";
 
 const theme = createTheme();
 
-
 const InputField = withStyles({
   root: {
     "& label.Mui-focused": {

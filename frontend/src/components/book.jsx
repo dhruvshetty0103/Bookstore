@@ -13,13 +13,18 @@ import { useDispatch } from "react-redux";
 import bookService from "../service/bookService";
 import { setBooks } from "../actions/bookActions";
 import BookCard from "./bookCard";
-import styled from "@emotion/styled";
-
-const Paginations = styled(Pagination)(({ theme }) => ({
-  color: "#A03037",
+import { makeStyles } from "@mui/styles";
+const useStyles = makeStyles(() => ({
+  ul: {
+    "& .Mui-selected": {
+      color: "white",
+      backgroundColor: "brown",
+    },
+  },
 }));
 
 const Book = () => {
+  const classes = useStyles();
   const token = sessionStorage.getItem("token");
   const myBooks = useSelector((state) => state.allBooks.filteredbooks);
   const numberOfBooks = myBooks.length;
@@ -108,10 +113,10 @@ const Book = () => {
       </Grid>
 
       <div id="pagination">
-        <Paginations
+        <Pagination
           count={5}
           shape="rounded"
-          color="primary"
+          classes={{ ul: classes.ul }}
           onChange={(event, page) => handlePagination(page)}
           style={{ margin: "20px auto" }}
         />

@@ -27,7 +27,7 @@ class bookValidation {
       if (err) {
         return res.send(err);
       }
-      req.body.userId = data._id;
+      req.body.userId = data.id;
       next();
     });
   };

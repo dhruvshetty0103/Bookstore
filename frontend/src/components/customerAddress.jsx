@@ -26,9 +26,6 @@ const InputField = withStyles({
       "& fieldset": {
         borderColor: "black",
       },
-      "&:hover fieldset": {
-        borderColor: "#A03037",
-      },
       "&.Mui-focused fieldset": {
         borderColor: "#A03037",
       },
@@ -49,9 +46,11 @@ const CustomerAddress = ({
     address: "",
     city: "",
     landmark: "",
-    type: "",
+    type: "Home",
   };
   const [details, setDetails] = useState(initialUserState);
+  const [isDissabled, setIsDissabled] = useState(true);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setDetails({ ...details, [name]: value });
@@ -78,6 +77,7 @@ const CustomerAddress = ({
   const handleUpdate = () => {
     handleExpanded();
     handleExpandedSummary();
+    setIsDissabled(true);
     bookService
       .addCustDetails(details)
       .then((res) => {
@@ -100,8 +100,21 @@ const CustomerAddress = ({
           </AccordionSummary>
           <AccordionDetails>
             <Grid item container xs={10} spacing={1.5}>
+              <Grid item xs={12} align="right">
+                <Button
+                  onClick={() => setIsDissabled(false)}
+                  style={{
+                    textTransform: "none",
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Edit
+                </Button>
+              </Grid>
               <Grid item xs={6}>
                 <InputField
+                disabled={isDissabled ? true : false}
                   id="name"
                   name="name"
                   placeholder="Name"
@@ -122,6 +135,7 @@ const CustomerAddress = ({
                   onChange={handleInputChange}
                   variant="outlined"
                   fullWidth
+                  disabled={isDissabled ? true : false}
                 />
               </Grid>
 
@@ -135,6 +149,7 @@ const CustomerAddress = ({
                   value={details.pincode}
                   onChange={handleInputChange}
                   fullWidth
+                  disabled={isDissabled ? true : false}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -147,6 +162,7 @@ const CustomerAddress = ({
                   fullWidth
                   value={details.locality}
                   onChange={handleInputChange}
+                  disabled={isDissabled ? true : false}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -159,6 +175,7 @@ const CustomerAddress = ({
                   fullWidth
                   value={details.address}
                   onChange={handleInputChange}
+                  disabled={isDissabled ? true : false}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -171,6 +188,7 @@ const CustomerAddress = ({
                   fullWidth
                   value={details.city}
                   onChange={handleInputChange}
+                  disabled={isDissabled ? true : false}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -183,10 +201,14 @@ const CustomerAddress = ({
                   fullWidth
                   value={details.landmark}
                   onChange={handleInputChange}
+                  disabled={isDissabled ? true : false}
                 />
               </Grid>
               <Grid item xs={12} align="left">
-                <FormControl component="fieldset">
+                <FormControl
+                  component="fieldset"
+                  disabled={isDissabled ? true : false}
+                >
                   <FormLabel component="legend">Type</FormLabel>
                   <RadioGroup row aria-label="gender" defaultValue="Home">
                     <FormControlLabel

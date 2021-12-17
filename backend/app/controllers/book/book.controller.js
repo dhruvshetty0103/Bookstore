@@ -142,5 +142,20 @@ class bookController {
       return res.status(500).send(error);
     }
   };
+  /**
+   * @description handles request response for removing a cart.
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   */
+   removeCart = async (req, res) => {
+    try {
+      let data = await bookService.removeCart(req.body.userId);
+      logger.info(data);
+      return res.status(200).json(data);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 }
 module.exports = new bookController();
