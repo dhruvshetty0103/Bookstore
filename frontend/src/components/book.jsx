@@ -20,7 +20,7 @@ import React,{useEffect} from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import bookService from "../service/bookService";
-import { setBooks } from "../actions/bookActions";
+import { setFilteredBooks, setPgno, setSort  } from "../actions/bookActions";
 import BookCard from "./bookCard";
 import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles(() => ({
