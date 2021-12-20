@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Execution        : cmd> node index.js
+ * @descrition      : User reset password page
+ * @file            : resetPassword.jsx
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import userService from "../service/userService";
@@ -42,6 +51,9 @@ const ResetPassWord = () => {
     setShowPassword(!showPassword);
   };
 
+   /***
+   * @description function for reseting the password
+   */
   const handleSubmit = (e) => {
     let errorFlag = false;
     e.preventDefault();

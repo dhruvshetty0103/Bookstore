@@ -1,9 +1,20 @@
+/* ************************************************************************
+ * Execution        : cmd> node index.js
+ * @descrition      : Redux book reducer
+ * @file            : bookReducer.jsx
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
 import { ActionTypes } from "../constants/action-types";
 
 const initialState = {
   books: [],
   filteredbooks: [],
   cartBooks: [],
+  sortIndex: 0,
+  pageNumber: 1,
 };
 
 export const bookReducer = (state = initialState, { type, payload }) => {
@@ -34,6 +45,12 @@ export const bookReducer = (state = initialState, { type, payload }) => {
       
     case ActionTypes.EMPTY_CART:
       return { ...state, cartBooks: [] };
+
+    case ActionTypes.SET_SORT:
+      return { ...state, sortIndex: payload };
+  
+    case ActionTypes.SET_PGNO:
+      return { ...state, pageNumber: payload };  
 
     default:
       return state;

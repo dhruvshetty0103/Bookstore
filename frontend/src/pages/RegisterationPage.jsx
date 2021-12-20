@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Execution        : cmd> node index.js
+ * @descrition      : User Registeration page
+ * @file            : registeration.jsx
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
 import React, { useState } from "react";
 import "../styles/registration.scss";
 import userService from "../service/userService";
@@ -68,6 +77,9 @@ export default function SignUp() {
     setUser({ ...user, [name]: value });
   };
 
+  /***
+   * @description function for user registeration
+   */
   const handleSubmit = (e) => {
     let errorFlag = false;
     e.preventDefault();

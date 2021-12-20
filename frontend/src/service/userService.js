@@ -1,5 +1,19 @@
+/* ************************************************************************
+ * Execution        : cmd> node index.js
+ * @descrition      : User Service
+ * @file            : userService.js
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
 import AxiosHelper from '../helper/axios.js'
 
+/***
+ * @description function to add user details
+ * @param takes data
+ * @returns response or err
+ */
 const register = (data) => {
   let reqobj = {
     method: 'post',
@@ -18,6 +32,11 @@ const register = (data) => {
     })
 }
 
+/***
+ * @description function to make user login
+ * @param takes data
+ * @returns response or err
+ */
 const login = (data) => {
   let reqobj = {
     method: 'post',
@@ -37,6 +56,11 @@ const login = (data) => {
     })
 }
 
+/***
+ * @description function for forgot password
+ * @param takes data
+ * @returns response or err
+ */
 const forgetPassword = (data) => {
   let reqobj = {
     method: 'post',
@@ -55,6 +79,11 @@ const forgetPassword = (data) => {
     })
 }
 
+/***
+ * @description function for reset password
+ * @param takes data
+ * @returns response or err
+ */
 const resetPassword = (data, token) => {
   let reqobj = {
     method: 'post',

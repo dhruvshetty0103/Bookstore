@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Execution        : cmd> node index.js
+ * @descrition      : App bar component
+ * @file            : AppBar.jsx
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
 import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import {Toolbar,Typography,IconButton} from "@mui/material";
@@ -7,7 +16,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import "../styles/home.scss";
 import { useSelector } from "react-redux";
-import { setFilteredBooks } from "../actions/bookActions";
+import { setFilteredBooks, setSort} from "../actions/bookActions";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import bookService from "../service/bookService";
@@ -27,8 +36,14 @@ const Appbar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myBooks]);
 
+  /***
+   * @description function to search a book 
+   * @param takes a 3 0r more letter string
+   * @returns list of matched books
+   */
   const handleSearch = (searchValue) => {
     if (searchValue.length >= 3) {
+      dispatch(setSort(0));
       bookService
         .searchBook({ searchTxt: searchValue })
         .then((res) => {

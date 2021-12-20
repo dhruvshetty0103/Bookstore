@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Execution        : cmd> node index.js
+ * @descrition      : Book component
+ * @file            : book.jsx
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
 import {
   Grid,
   Box,
@@ -7,7 +16,7 @@ import {
   MenuItem,
   Pagination,
 } from "@mui/material";
-import React from "react";
+import React,{useEffect} from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import bookService from "../service/bookService";
@@ -23,16 +32,22 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Book = () => {
+const Book = ({count}) => {
   const classes = useStyles();
   const token = sessionStorage.getItem("token");
   const myBooks = useSelector((state) => state.allBooks.filteredbooks);
-  const numberOfBooks = myBooks.length;
+  const pageNo = useSelector((state) => state.allBooks.pageNumber);
+  const sortIndex = useSelector((state) => state.allBooks.sortIndex);
 
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+  /***
+   * @description open and close function for the menu
+   * @param takes an event
+   */
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -40,31 +55,54 @@ const Book = () => {
     setAnchorEl(null);
   };
 
+  /***
+   * @description function to fetch books
+   * @param takes page no. , token and sort index
+   * @returns list of books
+   */
+   useEffect(() => {
+    bookService
+      .getBooks(pageNo, token, sortIndex)
+      .then((res) => {
+        dispatch(setFilteredBooks(res.data.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortIndex]);
+
+  /***
+   * @description function to paginate to different pages
+   * @param takes a page no.
+   */
   const handlePagination = (index) => {
-    if (token !== null) {
-      bookService
-        .getBooks(index, token)
-        .then((res) => {
-          console.log(res.data);
-          dispatch(setBooks(res.data));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    bookService
+      .getBooks(index, token, sortIndex)
+      .then((res) => {
+        dispatch(setFilteredBooks(res.data.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    dispatch(setPgno(index));
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   };
 
+  /***
+   * @description function to sort a book
+   * @param take a integer -1 for ascending and 1 for descending
+   */
   const handleDisplayOrder = (order) => {
     if (order === "low") {
-      myBooks.sort((a, b) => a.price - b.price);
       handleClose();
+      dispatch(setSort(-1));
     } else {
-      myBooks.sort((a, b) => b.price - a.price);
       handleClose();
+      dispatch(setSort(1)); 
     }
   };
 
@@ -74,7 +112,7 @@ const Book = () => {
         <Grid item xs={6} align="left">
           <Typography id="book-count">
             Books
-            <span id="book-count-span">({numberOfBooks} items)</span>
+            <span id="book-count-span">({count} items)</span>
           </Typography>
         </Grid>
         <Grid item xs={6} align="right">

@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Execution        : cmd> node index.js
+ * @descrition      : Address details component
+ * @file            : customerAddress.jsx
+ * @author          : Dhruv Shetty
+ * @version         : 1.0
+ * @since           : 8-Dec-2021
+ *
+ **************************************************************************/
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -61,11 +70,15 @@ const CustomerAddress = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /***
+   * @description function to fetch customer address details
+   */
   const fetchitem = () => {
     bookService
       .getCustDetails()
       .then((res) => {
         if (res.data !== null) {
+          console.log(res);
           setDetails(res.data);
         }
       })
@@ -74,6 +87,9 @@ const CustomerAddress = ({
       });
   };
 
+  /***
+   * @description function to update customer details
+   */
   const handleUpdate = () => {
     handleExpanded();
     handleExpandedSummary();
