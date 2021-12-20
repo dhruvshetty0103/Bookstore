@@ -32,7 +32,7 @@ bookRoute.delete("/cart/:id", bookMiddleware.ensureToken, bookController.deleteC
 bookRoute.post("/search", bookMiddleware.ensureToken, bookController.searchBook)
 
 // finds all book based on page index
-bookRoute.get("/:index",bookMiddleware.ensureToken,bookController.findAll);
+bookRoute.get("/:index/:sortId",bookMiddleware.ensureToken,bookController.findAll);
 
 //creates order for the book store
 bookRoute.post("/create-order",bookMiddleware.ensureToken,bookController.createOrder);

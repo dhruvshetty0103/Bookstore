@@ -18,7 +18,7 @@ class bookController {
    */
   findAll = async (req, res) => {
     try {
-      const data = await bookService.findAll(req.params.index);
+      const data = await bookService.findAll(req.params.index,req.params.sortId);
       logger.info(data);
       return res.send(data);
     } catch (err) {

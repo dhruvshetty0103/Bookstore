@@ -20,12 +20,19 @@ class bookService {
    * @param {callback} callback
    * @returns err or data
    */
-  findAll = async (index) => {
+  findAll = async (index,sortIndex) => {
     let page = parseInt(index);
     page = (page - 1) * 12;
     try {
       const data = await bookModel.findAll();
-      return data.slice(page, page + 12);
+      if (sortIndex == -1) {
+        data.sort((a, b) => a.price - b.price);
+      } else if (sortIndex == 1) {
+        data.sort((a, b) => b.price - a.price);
+      } else {
+        return {count:data.length,data:data.slice(page, page + 12)};
+      }
+      return {count:data.length,data:data.slice(page, page + 12)};
     } catch (error) {
       logger.error(error);
       throw error;
